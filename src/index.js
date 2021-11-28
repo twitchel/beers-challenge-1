@@ -99,8 +99,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 document.querySelector('.review-form').addEventListener('submit', async function (reviewForm) {
     reviewForm.preventDefault()
-    beer.reviews.push(reviewForm.target.querySelector('textarea').value)
+    const reviewField = reviewForm.target.querySelector('textarea')
+    beer.reviews.push(reviewField.value)
+    reviewField.value = ''
     await updateBeer(beer.id, beer)
+
 })
 
 document.querySelector('.description').addEventListener('submit', async function (beerForm) {
