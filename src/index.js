@@ -17,16 +17,19 @@ function renderNav(beers) {
 }
 
 function renderBeer(beer) {
-    const title = document.querySelector('main h2')
+    const title = document.querySelector('.beer-details h2')
     title.innerHTML = beer.name
 
-    const image = document.querySelector('main img')
+    const image = document.querySelector('.beer-details img')
     image.src = beer.image_url
 
-    const description = document.querySelector('main .description textarea')
+    const description = document.querySelector('.beer-details .description textarea')
     description.innerHTML = beer.description
 
     renderReviews(beer.reviews)
+
+    document.querySelector('main .beer-details').hidden = false
+    document.querySelector('main .no-beers').hidden = true
 }
 
 function renderReviews(reviews) {
@@ -79,9 +82,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     const beerList = await fetchData(`${apiHost}/beers`)
     renderNav(beerList)
 
+    const main = document.querySelector('main')
+    const noBeers = document.createElement('h2')
+    noBeers.className = 'no-beers'
+    noBeers.innerHTML = 'Please select a beer from the menu on the left'
+    main.appendChild(noBeers)
+
     if (beerId) {
         beer = await fetchData(`${apiHost}/beers/${beerId}`)
         renderBeer(beer)
+    } else {
+        main.querySelector('.beer-details').hidden = true
+        main.querySelector('.no-beers').hidden = false
     }
 })
 
